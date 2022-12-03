@@ -9,7 +9,8 @@ pub fn run() {
 }
 
 fn part_1(input: &[Round]) -> u64 {
-    input.iter()
+    input
+        .iter()
         .fold(0, |total_score, round| total_score + calculate_score(round))
 }
 
@@ -33,7 +34,7 @@ impl From<&str> for Outcome {
             "X" => Outcome::Lose,
             "Y" => Outcome::Draw,
             "Z" => Outcome::Win,
-            _ => panic!("unreachable")
+            _ => panic!("unreachable"),
         }
     }
 }
@@ -46,22 +47,24 @@ impl From<&str> for Selection {
             "A" | "X" => Selection::Rock,
             "B" | "Y" => Selection::Paper,
             "C" | "Z" => Selection::Scissors,
-            _ => panic!("unreachable")
+            _ => panic!("unreachable"),
         }
     }
 }
 
 fn process(input: String) -> Vec<Round> {
-    input.lines()
+    input
+        .lines()
         .map(|r_str| {
-             let (other, me) = r_str.split_once(' ').unwrap();
+            let (other, me) = r_str.split_once(' ').unwrap();
             (Selection::from(other), Selection::from(me))
         })
         .collect()
 }
 
 fn process_p2(input: String) -> Vec<Round> {
-    input.lines()
+    input
+        .lines()
         .map(|r_str| {
             let (play, desired_outcome) = r_str.split_once(' ').unwrap();
             let opponent_selection = Selection::from(play);
@@ -83,7 +86,6 @@ fn calculate_score(round: &Round) -> u64 {
         (Selection::Scissors, Selection::Paper) => 2,
         (Selection::Scissors, Selection::Scissors) => 6,
     }
-
 }
 
 fn calculate_your_play(desired: (Selection, Outcome)) -> Round {

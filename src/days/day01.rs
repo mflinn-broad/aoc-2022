@@ -8,27 +8,25 @@ pub fn run() {
 }
 
 fn process(input: String) -> Vec<u64> {
-    input.split("\n\n")
-        .map(|elf| elf.lines()
-            .map(|calories| calories.parse::<u64>().unwrap())
-            .sum()
-        )
+    input
+        .split("\n\n")
+        .map(|elf| {
+            elf.lines()
+                .map(|calories| calories.parse::<u64>().unwrap())
+                .sum()
+        })
         .collect()
 }
 
 fn part_1(input: &[u64]) -> u64 {
-    input.iter()
-        .max().unwrap().to_owned()
+    input.iter().max().unwrap().to_owned()
 }
 
-fn part_2 (input: &[u64]) -> u64 {
+fn part_2(input: &[u64]) -> u64 {
     let mut sorted_elves = input.to_owned();
     sorted_elves.sort();
-    
-    sorted_elves.iter()
-        .rev()
-        .take(3)
-        .sum()
+
+    sorted_elves.iter().rev().take(3).sum()
 }
 
 #[cfg(test)]
