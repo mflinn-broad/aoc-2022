@@ -3,11 +3,9 @@ use itertools::Itertools;
 use std::collections::HashSet;
 
 pub fn run() {
-    let raw_input = util::read_input("inputs/day03.txt").unwrap();
-    let input = process(raw_input.clone());
-    println!("part 1: {}", part_1(&input));
-    let p2_input = process_p2(raw_input);
-    println!("part 2: {}", part_2(&p2_input));
+    let input = util::read_input("inputs/day03.txt").unwrap();
+    println!("part 1: {}", part_1(input.clone()));
+    println!("part 2: {}", part_2(input));
 }
 
 #[derive(Debug)]
@@ -23,13 +21,23 @@ impl Rucksack {
         let second = HashSet::from_iter(second.chars());
         Rucksack { first, second }
     }
+
+    fn common(&self) -> char {
+        self.first
+            .intersection(&self.second)
+            .next()
+            .copied()
+            .unwrap()
+    }
 }
 
-fn process(input: String) -> Vec<Rucksack> {
+fn part_1(input: String) -> u32 {
     input
         .lines()
-        .map(Rucksack::new)
-        .collect()
+        .map(|ruck_str| Rucksack::new(ruck_str).common())
+        .fold(0, |total_priority, shared| {
+            total_priority + priority(shared)
+        })
 }
 
 fn priority(item: char) -> u32 {
@@ -38,17 +46,6 @@ fn priority(item: char) -> u32 {
         'A'..='Z' => ((item as u32 - 65) % 26) + 27,
         _ => panic!("unreachable"),
     }
-}
-
-fn part_1(rucksacks: &[Rucksack]) -> u32 {
-    rucksacks.iter().fold(0, |total_priority, rucksack| {
-        let shared = rucksack
-            .first
-            .intersection(&rucksack.second)
-            .next()
-            .unwrap();
-        total_priority + priority(*shared)
-    })
 }
 
 struct Group {
@@ -67,22 +64,18 @@ impl Group {
 
     fn common(&self) -> char {
         let a_b_shared: HashSet<char> = self.a.intersection(&self.b).copied().collect();
-        *a_b_shared.intersection(&self.c).next().unwrap()
+        a_b_shared.intersection(&self.c).next().copied().unwrap()
     }
 }
 
-fn process_p2(input: String) -> Vec<Group> {
+fn part_2(input: String) -> u32 {
     let lines: Vec<&str> = input.lines().collect_vec();
     lines
         .chunks(3)
-        .map(|group_lines| Group::new(group_lines[0], group_lines[1], group_lines[2]))
-        .collect()
-}
-
-fn part_2(groups: &[Group]) -> u32 {
-    groups.iter().fold(0, |total_priority, group| {
-        total_priority + priority(group.common())
-    })
+        .map(|group_lines| Group::new(group_lines[0], group_lines[1], group_lines[2]).common())
+        .fold(0, |total_priority, shared| {
+            total_priority + priority(shared)
+        })
 }
 
 #[cfg(test)]
@@ -101,20 +94,18 @@ wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw",
         );
-
-        let input = process(test_input);
-        assert_eq!(part_1(&input), 157);
+        assert_eq!(part_1(test_input), 157);
     }
 
     #[bench]
     fn bench_part_1(b: &mut Bencher) {
-        let input = process(util::read_input("inputs/day03.txt").unwrap());
-        b.iter(|| part_1(&input));
+        let input = util::read_input("inputs/day03.txt").unwrap();
+        b.iter(|| part_1(input.clone()));
     }
 
     #[bench]
     fn bench_part_2(b: &mut Bencher) {
-        let input = process_p2(util::read_input("inputs/day03.txt").unwrap());
-        b.iter(|| part_2(&input));
+        let input = util::read_input("inputs/day03.txt").unwrap();
+        b.iter(|| part_2(input.clone()));
     }
 }
