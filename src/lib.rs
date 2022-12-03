@@ -1,3 +1,3 @@
-#![feature(test, exclusive_range_pattern)]
+#![feature(test)]
 pub mod days;
 mod util;
