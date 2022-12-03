@@ -69,6 +69,7 @@ impl Group {
 }
 
 fn part_2(input: String) -> u32 {
+    // chunks will on work on a Vec type, not String
     let lines: Vec<&str> = input.lines().collect_vec();
     lines
         .chunks(3)
