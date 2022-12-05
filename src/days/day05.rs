@@ -20,7 +20,12 @@ fn parse(input: String) -> (Cargo, Vec<MoveInstruction>) {
 
 fn parse_starting_pos(input: &str) -> Cargo {
     let mut stack_data = input.lines().rev();
-    let num_stacks = stack_data.next().unwrap().trim().split_ascii_whitespace().count();
+    let num_stacks = stack_data
+        .next()
+        .unwrap()
+        .trim()
+        .split_ascii_whitespace()
+        .count();
 
     let mut stacks: Vec<Vec<char>> = vec![Vec::new(); num_stacks];
     for row in stack_data {
