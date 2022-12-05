@@ -36,7 +36,7 @@ impl Cargo {
                 break;
             }
         }
-        self.stacks[instruction.destination].extend(&mut temp_storage.iter().copied());
+        self.stacks[instruction.destination].extend(temp_storage.iter().copied());
     }
 
     fn tops(&self) -> String {
