@@ -8,10 +8,9 @@ pub fn run() {
 }
 
 fn part_1(input: &str, window_size: usize) -> usize {
-    let input_chars: Vec<char> = input.chars()
-        .collect();
+    let input_chars: Vec<char> = input.chars().collect();
 
-    for (i, window) in input_chars.windows(window_size).enumerate(){
+    for (i, window) in input_chars.windows(window_size).enumerate() {
         let window_char_set: HashSet<char> = HashSet::from_iter(window.iter().copied());
         if window_char_set.len() == window_size {
             return i + window_size;
@@ -36,5 +35,5 @@ mod tests {
     fn bench_part_2(b: &mut Bencher) {
         let input = util::read_input("inputs/day06.txt").unwrap();
         b.iter(|| part_1(&input, 14));
-    } 
+    }
 }
