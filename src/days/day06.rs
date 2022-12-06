@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 use crate::util;
 use std::collections::HashSet;
 
@@ -10,8 +8,8 @@ pub fn run() {
 }
 
 fn part_1(input: &str, window_size: usize) -> usize {
-    let input_chars = input.chars()
-        .collect_vec();
+    let input_chars: Vec<char> = input.chars()
+        .collect();
 
     for (i, window) in input_chars.windows(window_size).enumerate(){
         let window_char_set: HashSet<char> = HashSet::from_iter(window.iter().copied());
