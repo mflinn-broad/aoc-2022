@@ -19,3 +19,22 @@ fn part_1(input: &str, window_size: usize) -> usize {
     }
     0
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    extern crate test;
+    use test::Bencher;
+
+    #[bench]
+    fn bench_part_1(b: &mut Bencher) {
+        let input = util::read_input("inputs/day06.txt").unwrap();
+        b.iter(|| part_1(&input, 4));
+    }
+
+    #[bench]
+    fn bench_part_2(b: &mut Bencher) {
+        let input = util::read_input("inputs/day06.txt").unwrap();
+        b.iter(|| part_1(&input, 14));
+    } 
+}
