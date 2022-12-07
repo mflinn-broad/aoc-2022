@@ -4,6 +4,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
 
 pub fn run() {
     println!("Day 01 ***********");
@@ -18,4 +19,6 @@ pub fn run() {
     day05::run();
     println!("Day 06 ***********");
     day06::run();
+    println!("Day 07 ***********");
+    day07::run();
 }
