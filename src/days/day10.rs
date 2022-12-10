@@ -38,14 +38,14 @@ enum CPUState {
 }
 
 #[derive(Debug)]
-struct CPU {
+struct Cpu {
     x_register: i64,
     cycle_count: usize,
     curr_state: CPUState,
     curr_instruction: Option<Instruction>,
 }
 
-impl CPU {
+impl Cpu {
     fn new() -> Self {
         Self {
             x_register: 1,
@@ -97,12 +97,13 @@ fn parse(input: String) -> VecDeque<Instruction> {
 
 fn part_1(instructions: &mut VecDeque<Instruction>) -> i64 {
     let mut signal_strength = 0;
-    let mut cpu = CPU::new();
+    let mut cpu = Cpu::new();
     for _ in 0..220 {
         // try to load next instruction
         let next_instruction = instructions.pop_front().unwrap();
         match cpu.load_instruction(&next_instruction) {
             Some(_) => (),
+            // instruction already loaded, put it back on the queue
             None => instructions.push_front(next_instruction),
         }
 
@@ -117,7 +118,7 @@ fn part_1(instructions: &mut VecDeque<Instruction>) -> i64 {
 
 fn part_2(instructions: &mut VecDeque<Instruction>) -> Vec<Vec<char>> {
     let mut crt = vec![vec![' '; 40]; 6];
-    let mut cpu = CPU::new();
+    let mut cpu = Cpu::new();
     for _ in 0..240 {
         let next_instruction = instructions.pop_front().unwrap();
         match cpu.load_instruction(&next_instruction) {
@@ -127,14 +128,13 @@ fn part_2(instructions: &mut VecDeque<Instruction>) -> Vec<Vec<char>> {
         let curr_row = cpu.cycle_count / 40;
         let curr_col = (cpu.cycle_count - 1) % 40;
         let curr_col_i64 = curr_col as i64;
-        if (cpu.x_register-1..=cpu.x_register+1).contains(&curr_col_i64) {
+        if (cpu.x_register - 1..=cpu.x_register + 1).contains(&curr_col_i64) {
             crt[curr_row][curr_col] = '#';
         }
         cpu.tick();
     }
     crt
 }
-
 
 #[cfg(test)]
 mod tests {
