@@ -1,6 +1,5 @@
 use crate::util;
-use std::collections::HashSet;
-use std::collections::VecDeque;
+use std::collections::{HashSet, VecDeque};
 
 const DIRECTIONS: [(isize, isize); 4] = [(1, 0), (0, 1), (-1, 0), (0, -1)];
 
