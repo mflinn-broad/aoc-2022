@@ -68,7 +68,7 @@ impl Grid {
             }
             let possible_moves = self.get_possible_moves(current_pos);
             for mov in possible_moves {
-                if !current_path.contains(&mov) && !visited.contains(&mov) {
+                if !visited.contains(&mov) {
                     let mut new_path = current_path.clone();
                     new_path.push(mov);
                     possible_paths.push_back(new_path);
