@@ -24,11 +24,11 @@ fn parse(input: String) -> Result<Vec<Pair>, ParsePacketError> {
 }
 
 fn parse_p2(input: String) -> Result<Vec<Packet>, ParsePacketError> {
-    Ok(input.lines()
+    Ok(input
+        .lines()
         .filter(|line| !line.is_empty())
         .map(|packet_str| packet_str.try_into().unwrap())
-        .collect()
-    )
+        .collect())
 }
 
 fn part_1(pairs: &[Pair]) -> usize {
@@ -43,12 +43,17 @@ fn part_1(pairs: &[Pair]) -> usize {
 
 fn part_2(packets: Vec<Packet>) -> usize {
     let mut packets = packets;
-    let dividers: [Packet; 2] = [Packet::List(vec![Packet::Num(2)]), Packet::List(vec![Packet::Num(6)])];
+    let dividers: [Packet; 2] = [
+        Packet::List(vec![Packet::Num(2)]),
+        Packet::List(vec![Packet::Num(6)]),
+    ];
     packets.push(dividers[0].clone());
     packets.push(dividers[1].clone());
     packets.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
-    packets.iter().enumerate()
+    packets
+        .iter()
+        .enumerate()
         .filter(|(_, packet)| **packet == dividers[0] || **packet == dividers[1])
         .map(|(i, _)| i + 1)
         .product()
@@ -79,9 +84,7 @@ impl PartialOrd for Packet {
                     Some(Ordering::Greater)
                 }
             }
-            None => {
-                Some(Ordering::Equal)
-            }
+            None => Some(Ordering::Equal),
         }
     }
 }
