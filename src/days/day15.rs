@@ -1,7 +1,4 @@
-use itertools::Itertools;
-
 use crate::util;
-use std::collections::HashSet;
 
 pub fn run() {
     let raw_input = util::read_input("inputs/day15.txt").unwrap();
@@ -96,9 +93,8 @@ fn get_row_segments(sensors_and_beacons: &[(SensorAndBeacon, usize)], row: i64) 
     sensors_and_beacons
         .iter()
         .for_each(|(sensor_and_beacon, distance)| {
-            let segment = get_row_segment_at_manhattan(sensor_and_beacon, *distance, row);
-            if segment.is_some() {
-                segments.push(segment.unwrap());
+            if let Some(segment) = get_row_segment_at_manhattan(sensor_and_beacon, *distance, row) {
+                segments.push(segment)
             }
         });
 
