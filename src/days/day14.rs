@@ -7,7 +7,7 @@ const STARTING_POINT: Point = Point { x: 500, y: 0 };
 
 pub fn run() {
     let raw_input = util::read_input("inputs/day14.txt").unwrap();
-    let mut cave = parse(raw_input);
+    let mut cave = Cave::from(raw_input.as_str());
     while cave.tick().is_some() {}
     println!("{}", cave.fallen_sand.len());
 }
@@ -52,7 +52,6 @@ impl From<&str> for RockStructure {
                         obstacles.insert(Point { x: curr.x, y: ys });
                     }
                 }
-                
             } else {
                 if curr.x < next.x {
                     for xs in curr.x..=next.x {
@@ -63,7 +62,6 @@ impl From<&str> for RockStructure {
                         obstacles.insert(Point { x: xs, y: curr.y });
                     }
                 }
-                
             }
         }
         RockStructure { obstacles }
@@ -112,7 +110,7 @@ impl Cave {
         }
 
         // check for floor
-        if self.curr_sand.as_ref().unwrap().y == self.lowest_point+1 {
+        if self.curr_sand.as_ref().unwrap().y == self.lowest_point + 1 {
             self.fallen_sand.insert(self.curr_sand.take().unwrap());
             return Some(());
         }
@@ -173,11 +171,6 @@ impl Cave {
     }
 }
 
-fn parse(input: String) -> Cave {
-    Cave::from(input.as_str())
-}
-
-
 mod tests {
     use super::*;
     extern crate test;
@@ -189,18 +182,18 @@ mod tests {
     #[test]
     fn test_cave() {
         let input = String::from(TEST_OBSTACLES);
-        let mut cave = parse(input);
+        let mut cave = Cave::from(input.as_str());
         while cave.tick().is_some() {}
-        assert_eq!(cave.fallen_sand.len(), 24);
+        assert_eq!(cave.fallen_sand.len(), 93);
     }
 
-    #[bench]
-    fn bench_part_1(b: &mut Bencher) {
-        let raw_input = util::read_input("inputs/day14.txt").unwrap();
-        b.iter(|| {
-            let mut cave = parse(raw_input.clone());
-            while cave.tick().is_some() {}
-        })
-        
-    }
+    // #[bench]
+    // fn bench_part_1(b: &mut Bencher) {
+    //     let raw_input = util::read_input("inputs/day14.txt").unwrap();
+    //     b.iter(|| {
+    //         let mut cave = parse(raw_input.clone());
+    //         while cave.tick().is_some() {}
+    //     })
+
+    // }
 }
